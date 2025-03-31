@@ -1,0 +1,265 @@
+<!DOCTYPE html><html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Octa Batch - Educational Platform</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+
+        body {
+
+            font-family: Arial, sans-serif;
+
+            background-color: #121212;
+
+            color: #fff;
+
+            margin: 0;
+
+            padding: 0;
+
+            text-align: center;
+
+        }
+
+        header {
+
+            background: #1e1e1e;
+
+            padding: 1rem;
+
+        }
+
+        nav ul {
+
+            list-style: none;
+
+            padding: 0;
+
+        }
+
+        nav ul li {
+
+            display: inline;
+
+            margin: 0 15px;
+
+        }
+
+        nav ul li a {
+
+            color: #fff;
+
+            text-decoration: none;
+
+        }
+
+        section {
+
+            padding: 2rem;
+
+        }
+
+        .search-container {
+
+            display: flex;
+
+            justify-content: center;
+
+            margin: 1rem 0;
+
+        }
+
+        #searchBar {
+
+            padding: 0.8rem;
+
+            width: 80%;
+
+            max-width: 400px;
+
+            border: none;
+
+            border-radius: 25px;
+
+            font-size: 1rem;
+
+            outline: none;
+
+            background: #2c2c2c;
+
+            color: white;
+
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+
+            transition: 0.3s ease;
+
+        }
+
+        #searchBar:focus {
+
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+
+        }
+
+        #videoContainer {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            justify-content: center;
+
+        }
+
+        .video {
+
+            margin: 10px;
+
+            width: 300px;
+
+        }
+
+        footer {
+
+            background: #1e1e1e;
+
+            padding: 1rem;
+
+            margin-top: 2rem;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+
+        <h1>Octa Batch</h1>
+
+        <nav>
+
+            <ul>
+
+                <li><a href="#home">Home</a></li>
+
+                <li><a href="#about">About Us</a></li>
+
+                <li><a href="#contact">Contact Us</a></li>
+
+            </ul>
+
+        </nav>
+
+    </header><section id="home">
+
+    <h2>Prayas Series Videos</h2>
+
+    <div class="search-container">
+
+        <input type="text" id="searchBar" placeholder="Search Videos...">
+
+    </div>
+
+    <div id="videoContainer"></div>
+
+</section>
+
+<section id="about">
+
+    <h2>About Us</h2>
+
+    <p>Octa Batch is an educational platform providing high-quality learning resources.</p>
+
+</section>
+
+<section id="contact">
+
+    <h2>Contact Us</h2>
+
+    <p>Email: <a href="mailto:octabatch@gmail.com">octabatch@gmail.com</a></p>
+
+</section>
+
+<footer>
+
+    <p>&copy; 2025 Octa Batch. All Rights Reserved.</p>
+
+</footer>
+
+<script>
+
+    const API_KEY = 'AIzaSyBjb6ZKYyXHX16QJejKyOEA6iHD_1HfrAs';
+
+    const CHANNEL_ID = 'UCBjRa_6mf-xTPQcXhVIde2A';
+
+    const videoContainer = document.getElementById('videoContainer');
+
+    const searchBar = document.getElementById('searchBar');
+
+    
+
+    async function fetchVideos(query = '') {
+
+        const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${CHANNEL_ID}&q=${query}&maxResults=10&type=video&key=${API_KEY}`;
+
+        const response = await fetch(url);
+
+        const data = await response.json();
+
+        displayVideos(data.items);
+
+    }
+
+    
+
+    function displayVideos(videos) {
+
+        videoContainer.innerHTML = '';
+
+        videos.forEach(video => {
+
+            const videoElement = document.createElement('div');
+
+            videoElement.classList.add('video');
+
+            videoElement.innerHTML = `
+
+                <iframe width="100%" height="200" src="https://www.youtube.com/embed/${video.id.videoId}" frameborder="0" allowfullscreen></iframe>
+
+                <h3>${video.snippet.title}</h3>
+
+            `;
+
+            videoContainer.appendChild(videoElement);
+
+        });
+
+    }
+
+    
+
+    searchBar.addEventListener('input', (e) => {
+
+        fetchVideos(e.target.value);
+
+    });
+
+    
+
+    fetchVideos();
+
+</script>
+
+</body>
+
+</html>
